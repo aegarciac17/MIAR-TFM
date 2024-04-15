@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 390, y: 1050}
+  m_AnchoredPosition: {x: 390, y: 820}
   m_SizeDelta: {x: -820, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &82313756
@@ -245,9 +245,9 @@ MonoBehaviour:
     el nivel de jugador m\xE1s dificil debe ser obtener la fraccion equivalente.
     El numero de elementos de la lista de opciones debe ser n+1, siendo n el nivel
     del jugador.\nPor ejemplo:\n\nEntrada 1: \"Dame opciones para una cantidad de
-    ingrediente de  0.5  y un jugador de nivel 1\".\n\nSalida 1: [\"1/2\", \"2/3\"]\n\n\nEntrada
-    2: \"Dame opciones para una cantidad de ingrediente de  0.5  y un jugador de
-    nivel 5\".\n\nSalida 2: [\"1/2\", \"1/20\",\"2/3\", \"3/9\",\"2/12\",\"2/7\"]"
+    ingrediente de  0.3  y un jugador de nivel 1\".\n\nSalida 1: [\"3/10\", \"2/3\"]\n\n\nEntrada
+    2: \"Dame opciones para una cantidad de ingrediente de  0.3 y un jugador de nivel
+    5\".\n\nSalida 2: [\"1/5\", \"2/3\", \"3/9\",\"2/12\",\"1/10\",\"2/7\"]"
 --- !u!4 &99387016
 Transform:
   m_ObjectHideFlags: 0
@@ -475,6 +475,8 @@ MonoBehaviour:
   ingredientes_nivel: 0
   monedas: 0
   Objetivos: []
+  nombres_ingrediente: []
+  mensaje_controlador_nivel: 'Sigues en el nivel '
 --- !u!1 &142105161
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,10 +884,10 @@ MonoBehaviour:
   port: 13333
   stream: 0
   seed: -1
-  temperature: 0.1
-  topK: 40
-  topP: 0.9
-  nPredict: 256
+  temperature: 1
+  topK: 80
+  topP: 1
+  nPredict: 2048
   playerName: Harry
   AIName: Snape
   prompt: "Genera un objeto JSON que represente una poci\xF3n m\xE1gica. La pocion
@@ -894,25 +896,24 @@ MonoBehaviour:
     de cada ingrediente expresada como un n\xFAmero decimal. Utiliza un lenguaje
     comprensible para un ni\xF1o de 12 a\xF1os. A\xF1ade al principio de los ingredientes
     que no sean l\xEDquidos una palabra como \"extracto\", \"esencia\", \"fragancia\"
-    o \"jugo\".\r\nEs importante que las cantidades de ingredientes sean siempre
-    mayores que 0.1.\n\r\r\nEvita el uso de ingredientes medidos en gramos.\r\n\r\nPor
+    o \"jugo\".\r\n\r\r\nEvita el uso de ingredientes medidos en gramos.\r\n\r\nPor
     ejemplo, para un jugador de nivel 2, la salida podr\xEDa ser:\r\n\r\n'''\r\n{\r\n 
     \"pocion\": {\r\n    \"nombre\": \"Elixir de Energ\xEDa Arcana\",\r\n    \"ingredientes\":
     [\r\n      {\r\n        \"nombre\": \"extracto de alas de murci\xE9lago\",\r\n       
     \"cantidad\": 0.4\r\n      },\r\n      {\r\n        \"nombre\": \"l\xE1grimas
-    de sirena\",\r\n        \"cantidad\": 0.2\r\n      },\r\n      {\r\n        \"nombre\":
-    \"saliva de sapo\",\r\n        \"cantidad\": 0.3\r\n      }\r\n    ]\r\n  }\r\n}\r\n'''
+    de sirena\",\r\n        \"cantidad\": 0.7\n      },\r\n      {\r\n        \"nombre\":
+    \"saliva de sapo\",\r\n        \"cantidad\": 0.5\r\n      }\r\n    ]\r\n  }\r\n}\r\n'''
     \nPor favor, aseg\xFArate de que el JSON final est\xE9 bien formateado y cerrado
     correctamente."
   modelHide: 1
   numThreads: -1
   numGPULayers: 30
-  parallelPrompts: -1
+  parallelPrompts: 1
   debug: 0
   model: mistral-7b-instruct-v0.2.Q4_K_M.gguf
   lora: 
-  contextSize: 1024
-  batchSize: 1024
+  contextSize: 2048
+  batchSize: 2048
   modelUrl: https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_K_M.gguf?download=true
   modelProgress: 1
   modelCopyProgress: 1
@@ -4029,7 +4030,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -640, y: 1050}
+  m_AnchoredPosition: {x: -640, y: 820}
   m_SizeDelta: {x: -1320, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1663735984
@@ -4248,14 +4249,12 @@ MonoBehaviour:
   opciones_ingrediente_5: []
   opciones_ingrediente_6: []
   pocion_lista: 0
-  prompt_agente_opciones: "Genera una lista de fracciones en funci\xF3n de la cantidad
-    de ingrediente y el nivel del jugador. Una de las opciones o la suma de varias
-    de ellas debe ser equivalente a la cantidad de ingrediente. Cuanto mayor sea
-    el nivel de jugador m\xE1s dificil debe ser obtener la fraccion equivalente.Por
-    ejemplo:Entrada 1: \"Dame opciones para una cantidad de ingrediente de  0.5 
-    y un jugador de nivel 1\".Salida 1: [\"1/2\", \"2/3\"]Entrada 2: \"Dame opciones
-    para una cantidad de ingrediente de  0.5  y un jugador de nivel 5\".Salida 2:
-    [\"1/2\", \"1/20\",\"2/3\", \"3/9\",\"2/12\"]"
+  prompt_agente_opciones: 'Given n and a decimal amount of ingredient, generate a
+    list of n+1 fractions as strings. Ensure that one or sum of the fractions in
+    the list represent the amount of ingredient converted to a fraction with a denominator
+    of 10 and simplified. Avoid including the decimal representation directly in
+    the list. Ensure all options are presented as fractions, not decimal numbers
+    or mixed numbers.Output format: ["a/b","a/b",...]'
 --- !u!1 &2059139682
 GameObject:
   m_ObjectHideFlags: 0

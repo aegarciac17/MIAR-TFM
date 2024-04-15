@@ -23,6 +23,7 @@ public class ControladorNivel : MonoBehaviour
         {
 
             SaveManager.reiniciar();
+            Debug.Log("Reinicio de nivel completado");
         }
 
         if (!modificacionRealizada && tiempoJugador != 0f)
@@ -95,21 +96,21 @@ public class ControladorNivel : MonoBehaviour
 
             //Fuzzificamos las entradas (El nivel deberia influir en los rangos, a mayor nivel mayor exigencia, mueve los limites 0.05)
             //0-0.40 Eleccion mala
-            eleccionMala = FMembresia.GradoInversa(eleccionJugador, 0.2f, 0.6f + parametro_modificador_eleccion);
+            eleccionMala = FMembresia.GradoInversa(eleccionJugador, 0.2f, 0.5f + parametro_modificador_eleccion);
             //0.20-0.80 Eleccion regular
-            eleccionRegular = FMembresia.Triangulo(eleccionJugador, 0.3f + parametro_modificador_eleccion, 0.5f + parametro_modificador_eleccion, 0.7f + parametro_modificador_eleccion);
+            eleccionRegular = FMembresia.Triangulo(eleccionJugador, 0.25f + parametro_modificador_eleccion, 0.5f + parametro_modificador_eleccion, 0.65f + parametro_modificador_eleccion);
             //0.60-1 Eleccion Buena
-            eleccionBuena = FMembresia.Grado(eleccionJugador, 0.4f + parametro_modificador_eleccion, 0.7f + parametro_modificador_eleccion);
+            eleccionBuena = FMembresia.Grado(eleccionJugador, 0.5f + parametro_modificador_eleccion, 0.65f + parametro_modificador_eleccion);
             Debug.Log(string.Format("eleccion: mala-{0}, regular-{1},buena{2}", eleccionMala, eleccionRegular, eleccionBuena));
 
             //0,0.75-tiempo_corto
-            tiempoCorto = FMembresia.GradoInversa(tiempoJugador, 0.2f - parametro_modificador_tiempo, 0.5f - parametro_modificador_tiempo);
+            tiempoCorto = FMembresia.GradoInversa(tiempoJugador, 0.1f - parametro_modificador_tiempo, 0.25f - parametro_modificador_tiempo);
 
             //0.25-1.25 tiempo_medio
-            tiempoMedio = FMembresia.Trapezoide(tiempoJugador, 0.15f - parametro_modificador_tiempo, 0.45f - parametro_modificador_tiempo, 0.5f - parametro_modificador_tiempo, 0.8f - parametro_modificador_tiempo);
+            tiempoMedio = FMembresia.Trapezoide(tiempoJugador, 0.1f - parametro_modificador_tiempo, 0.2f - parametro_modificador_tiempo, 0.25f - parametro_modificador_tiempo, 0.4f - parametro_modificador_tiempo);
 
             //0.75-10 tiempo largo
-            tiempoLargo = FMembresia.Grado(tiempoJugador, 0.5f - parametro_modificador_tiempo, 0.75f - parametro_modificador_tiempo);
+            tiempoLargo = FMembresia.Grado(tiempoJugador, 0.25f - parametro_modificador_tiempo, 0.35f - parametro_modificador_tiempo);
 
             Debug.Log(string.Format("Tiempo: corto-{0}, medio-{1},largo{2}", tiempoCorto, tiempoMedio, tiempoLargo));
 
@@ -134,21 +135,35 @@ public class ControladorNivel : MonoBehaviour
             Debug.Log(string.Format("Dificultad: Baja-{0}, Media-{1},Alta{2}", DificultadBaja, DificultadMedia, DificultadAlta));
             if (Mathf.Max(DificultadBaja, DificultadMedia, DificultadAlta) == DificultadAlta)
             {
-
+                Ingredientes_Selecionados.mensaje_controlador_nivel = $"Esta última poción no ha estado a la altura. Vuelves al nivel {nivelResultante} para repasar";
                 nivelResultante = nivelActual - 1;
             }
             else if (Mathf.Max(DificultadBaja, DificultadMedia, DificultadAlta) == DificultadBaja && DificultadBaja!=DificultadMedia)
-            {
+            {                
                 nivelResultante = nivelActual + 1;
+                Ingredientes_Selecionados.mensaje_controlador_nivel = $"¡Enhorabuena! Has subido al nivel {nivelResultante}";
             }
             else {
                 nivelResultante = nivelActual;
+                Ingredientes_Selecionados.mensaje_controlador_nivel = $"Sigues en nivel {nivelResultante}. ¡Un poco más y subirás de nivel!";
+                
             }
-
+           
             //Evitamos que el nivel sea menor a 1 y mayor a 5
 
             if (nivelResultante > 5) { nivelResultante = 5; }
             if (nivelResultante < 1) { nivelResultante = 1; }
+
+            if (Ingredientes_Selecionados.mensaje_controlador_nivel != null && Ingredientes_Selecionados.mensaje_controlador_nivel != "")
+            {
+                string[] mensajes = Ingredientes_Selecionados.mensaje_controlador_nivel.ToString().Split('.');
+                foreach (var frase_nivel in mensajes)
+                {
+                    elegirPocion.AgregarFrase(frase_nivel);
+                }
+                elegirPocion.AgregarFrase($"¡Mañana más y mejor!");
+            }
+
             elegirPocion.nivel_jugador = nivelResultante;
         }
         else

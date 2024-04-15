@@ -83,19 +83,11 @@ public class Usar_Caldero : MonoBehaviour
         {
             cantidad = Ingredientes_Selecionados.cantidad_ingrediente_6;
         }
-        ElegirPocion.AgregarFrase($"Has añadido {cantidad} L de nombre ingrediente");
+        ElegirPocion.AgregarFrase($"Has añadido {cantidad} L de {Ingredientes_Selecionados.nombres_ingrediente[indice_ingrediente-1]}");
         ElegirPocion.AgregarFrase(Ingredientes_Selecionados.error(ElegirPocion.Cantidades[Ingredientes_Selecionados.ingrediente_opciones-1],cantidad));
         ElegirPocion.indice_ingrediente_actual++;
         ElegirPocion.ActualizarTexto();
         Ingredientes_Selecionados.ingrediente_opciones++;
         spawn.destruir_opciones_ingredientes();
-        /*if (Ingredientes_Selecionados.ingrediente_opciones <= ElegirPocion.Cantidades.Count)
-        {
-
-            spawn.crear_opciones_ingrediente(Ingredientes_Selecionados.ingrediente_opciones);
-        }
-        else {
-            Debug.Log("Nivel finalizado");
-        }*/
     }
 }

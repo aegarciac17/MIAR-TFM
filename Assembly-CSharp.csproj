@@ -60,23 +60,22 @@
     <Analyzer Include="C:\Users\aegar\Desktop\workspace\TFM\2022.3.17f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Mostrar.cs" />
     <Compile Include="Assets\Scripts\Usar_Caldero.cs" />
     <Compile Include="Assets\Scripts\ServerClient.cs" />
     <Compile Include="Assets\Scripts\FMembresia.cs" />
+    <Compile Include="Assets\Scripts\Spawn.cs" />
     <Compile Include="Assets\Scripts\ControladorNivel.cs" />
     <Compile Include="Assets\2D Fantasy Character Pack\animate.cs" />
+    <Compile Include="Assets\Scripts\seleccionar_opcion.cs" />
+    <Compile Include="Assets\Scripts\MostrarObjetivo.cs" />
     <Compile Include="Assets\Scripts\SaveManager.cs" />
     <Compile Include="Assets\Scripts\MovimientoArribaAbajo.cs" />
     <Compile Include="Assets\Scripts\player.cs" />
-    <Compile Include="Assets\MostrarObjetivo.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-    <Compile Include="Assets\ingredientes_selecionados.cs" />
     <Compile Include="Assets\Scripts\MostrarTimer.cs" />
-    <Compile Include="Assets\seleccionar_opcion.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
-    <Compile Include="Assets\Spawn.cs" />
     <Compile Include="Assets\Scripts\Reglas.cs" />
+    <Compile Include="Assets\Scripts\ingredientes_selecionados.cs" />
     <Compile Include="Assets\Scripts\ElegirPocion.cs" />
   </ItemGroup>
   <ItemGroup>

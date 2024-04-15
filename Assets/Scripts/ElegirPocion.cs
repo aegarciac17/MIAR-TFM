@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System;
 using System.Linq;
 using static ElegirPocion;
+using Unity.VisualScripting;
 
 public class ElegirPocion : MonoBehaviour
 {
@@ -28,7 +29,6 @@ public class ElegirPocion : MonoBehaviour
     public int indiceFraseActual = 0;
     public int indice_ingrediente_actual = 1;
     [SerializeField] public float nivel_jugador;
-
     public string Instrucciones;
     public List<float> Cantidades;
     public List<string> opciones_ingrediente_1;
@@ -40,19 +40,8 @@ public class ElegirPocion : MonoBehaviour
     bool llamada_realizada;
     public bool pocion_lista;
     bool recompensa_calculada;
-    public string prompt_agente_opciones= "Genera una lista de fracciones en función de la cantidad de ingrediente y el nivel del jugador. " +
-        "Seleccionando una o varias de las opciones se debe obtener la cantidad de ingrediente exacta. Por ejemplo, para una cantidad de 0.3, no es suficiente con incluir la fracción \"1/3\", debe ser \"3/10\" o sumar las opciones \"1/5\" y \"1/10\"" +
-        "Cuanto mayor sea el nivel de jugador más dificil debe ser obtener la fraccion equivalente." +
-        "El numero de elementos de la lista de opciones debe ser n+1, siendo n el nivel del jugador." +
-        "Por ejemplo:" +
-        "Entrada 1: \"Dame opciones para una cantidad de ingrediente de  0.5  y un jugador de nivel 1\"." +
-        "Salida 1: [\"1/2\", \"2/3\"]" +
-        "Entrada 2: \"Dame opciones para una cantidad de ingrediente de  0.5  y un jugador de nivel 5\"." +
-        "Salida 2: [\"1/2\", \"1/20\",\"2/3\", \"3/9\",\"2/12\",\"2/7\"]"+
-        "Por favor, asegúrate de que las fracciones proporcionadas en la lista sean válidas y que al menos una combinación sume exactamente la cantidad requerida para evitar problemas.";
-
-    //public bool isIngredientOptions;
-    //public List<List<Fraction>> opciones_ingredientes = new List<List<Fraction>>();
+    public string prompt_agente_opciones;
+    System.Random rnd = new System.Random();
 
 
     void HandleClientReply(string reply2)
@@ -71,16 +60,27 @@ public class ElegirPocion : MonoBehaviour
                 {
 
                     opciones_ingrediente_1 = reply2.Trim().Split(",").ToList();
+                    // Generar una lista de índices aleatorios
+                    var indicesAleatorios = Enumerable.Range(0, opciones_ingrediente_1.Count).OrderBy(x => rnd.Next()).ToList();
+
+                    // Reorganizar los elementos de la lista original según los índices aleatorios
+                    var listaAleatoria = indicesAleatorios.Select(i => opciones_ingrediente_1[i]).ToList();
+
+                    // Actualizar la lista original con la nueva lista aleatoria
+                    opciones_ingrediente_1.Clear();
+                    opciones_ingrediente_1.AddRange(listaAleatoria);
+
                     if (Cantidades.Count > 1)
                     {
                         gameObject.SetActive(false);
                         ingrediente2 = gameObject.AddComponent<LLMClient>();
                         ingrediente2.prompt = prompt_agente_opciones;
                         ingrediente2.stream = false;
+                        ingrediente2.seed = -1;
                         gameObject.SetActive(true);
 
                         ServerClientInteraction interaction3 = new ServerClientInteraction(ingrediente2);
-                        interaction3.StartInteraction("Da opciones para una cantidad de ingrediente de " + Cantidades[1].ToString() + " y un nivel de jugador de " + nivel_jugador.ToString(), HandleClientReply);
+                        interaction3.StartInteraction($"Generate options for an amount of ingredient of {Cantidades[1].ToString()} and n={nivel_jugador.ToString()}.", HandleClientReply);
                     }
                     else {
                         pocion_lista = true;
@@ -93,6 +93,16 @@ public class ElegirPocion : MonoBehaviour
                 {
 
                     opciones_ingrediente_2 = reply2.Trim().Split(",").ToList();
+                    // Generar una lista de índices aleatorios
+                    var indicesAleatorios = Enumerable.Range(0, opciones_ingrediente_2.Count).OrderBy(x => rnd.Next()).ToList();
+
+                    // Reorganizar los elementos de la lista original según los índices aleatorios
+                    var listaAleatoria = indicesAleatorios.Select(i => opciones_ingrediente_2[i]).ToList();
+
+                    // Actualizar la lista original con la nueva lista aleatoria
+                    opciones_ingrediente_2.Clear();
+                    opciones_ingrediente_2.AddRange(listaAleatoria);
+
 
                     if (Cantidades.Count > 2)
                     {
@@ -100,10 +110,11 @@ public class ElegirPocion : MonoBehaviour
                         ingrediente3 = gameObject.AddComponent<LLMClient>();
                         ingrediente3.prompt = prompt_agente_opciones;
                         ingrediente3.stream = false;
+                        ingrediente3.seed = -1;
                         gameObject.SetActive(true);
 
                         ServerClientInteraction interaction4 = new ServerClientInteraction(ingrediente3);
-                        interaction4.StartInteraction("Da opciones para una cantidad de ingrediente de " + Cantidades[2].ToString() + " y un nivel de jugador de " + nivel_jugador.ToString(), HandleClientReply);
+                        interaction4.StartInteraction($"Generate options for an amount of ingredient of {Cantidades[2].ToString()} and n={nivel_jugador.ToString()}.", HandleClientReply);
                     }
                     else
                     {
@@ -115,6 +126,15 @@ public class ElegirPocion : MonoBehaviour
                 {
 
                     opciones_ingrediente_3 = reply2.Trim().Split(",").ToList();
+                    // Generar una lista de índices aleatorios
+                    var indicesAleatorios = Enumerable.Range(0, opciones_ingrediente_3.Count).OrderBy(x => rnd.Next()).ToList();
+
+                    // Reorganizar los elementos de la lista original según los índices aleatorios
+                    var listaAleatoria = indicesAleatorios.Select(i => opciones_ingrediente_3[i]).ToList();
+
+                    // Actualizar la lista original con la nueva lista aleatoria
+                    opciones_ingrediente_3.Clear();
+                    opciones_ingrediente_3.AddRange(listaAleatoria);
 
                     if (Cantidades.Count > 3)
                     {
@@ -122,10 +142,11 @@ public class ElegirPocion : MonoBehaviour
                         ingrediente4 = gameObject.AddComponent<LLMClient>();
                         ingrediente4.prompt = prompt_agente_opciones;
                         ingrediente4.stream = false;
+                        ingrediente4.seed = -1;
                         gameObject.SetActive(true);
 
                         ServerClientInteraction interaction5 = new ServerClientInteraction(ingrediente4);
-                        interaction5.StartInteraction("Da opciones para una cantidad de ingrediente de " + Cantidades[3].ToString() + " y un nivel de jugador de " + nivel_jugador.ToString(), HandleClientReply);
+                        interaction5.StartInteraction($"Generate options for an amount of ingredient of {Cantidades[3].ToString()} and n={nivel_jugador.ToString()}.", HandleClientReply);
                     }
                     else
                     {
@@ -137,6 +158,15 @@ public class ElegirPocion : MonoBehaviour
                 {
 
                     opciones_ingrediente_4 = reply2.Trim().Split(",").ToList();
+                    // Generar una lista de índices aleatorios
+                    var indicesAleatorios = Enumerable.Range(0, opciones_ingrediente_4.Count).OrderBy(x => rnd.Next()).ToList();
+
+                    // Reorganizar los elementos de la lista original según los índices aleatorios
+                    var listaAleatoria = indicesAleatorios.Select(i => opciones_ingrediente_4[i]).ToList();
+
+                    // Actualizar la lista original con la nueva lista aleatoria
+                    opciones_ingrediente_4.Clear();
+                    opciones_ingrediente_4.AddRange(listaAleatoria);
 
                     if (Cantidades.Count > 4)
                     {
@@ -144,10 +174,11 @@ public class ElegirPocion : MonoBehaviour
                         ingrediente5 = gameObject.AddComponent<LLMClient>();
                         ingrediente5.prompt = prompt_agente_opciones;
                         ingrediente5.stream = false;
+                        ingrediente5.seed = -1;
                         gameObject.SetActive(true);
 
                         ServerClientInteraction interaction6 = new ServerClientInteraction(ingrediente5);
-                        interaction6.StartInteraction("Da opciones para una cantidad de ingrediente de " + Cantidades[4].ToString() + " y un nivel de jugador de " + nivel_jugador.ToString(), HandleClientReply);
+                        interaction6.StartInteraction($"Generate options for an amount of ingredient of {Cantidades[4].ToString()} and n={nivel_jugador.ToString()}.", HandleClientReply);
                     }
                     else
                     {
@@ -159,6 +190,15 @@ public class ElegirPocion : MonoBehaviour
                 {
 
                     opciones_ingrediente_5 = reply2.Trim().Split(",").ToList();
+                    // Generar una lista de índices aleatorios
+                    var indicesAleatorios = Enumerable.Range(0, opciones_ingrediente_5.Count).OrderBy(x => rnd.Next()).ToList();
+
+                    // Reorganizar los elementos de la lista original según los índices aleatorios
+                    var listaAleatoria = indicesAleatorios.Select(i => opciones_ingrediente_5[i]).ToList();
+
+                    // Actualizar la lista original con la nueva lista aleatoria
+                    opciones_ingrediente_5.Clear();
+                    opciones_ingrediente_5.AddRange(listaAleatoria);
 
                     if (Cantidades.Count > 5)
                     {
@@ -169,7 +209,7 @@ public class ElegirPocion : MonoBehaviour
                         gameObject.SetActive(true);
 
                         ServerClientInteraction interaction5 = new ServerClientInteraction(ingrediente6);
-                        interaction5.StartInteraction("Da opciones para una cantidad de ingrediente de " + Cantidades[5].ToString() + " y un nivel de jugador de " + nivel_jugador.ToString(), HandleClientReply);
+                        interaction5.StartInteraction($"Generate options for an amount of ingredient of {Cantidades[5].ToString()} and n={nivel_jugador.ToString()}.", HandleClientReply);
                     }
                     else
                     {
@@ -181,6 +221,15 @@ public class ElegirPocion : MonoBehaviour
                 {
 
                     opciones_ingrediente_6 = reply2.Trim().Split(",").ToList();
+                    // Generar una lista de índices aleatorios
+                    var indicesAleatorios = Enumerable.Range(0, opciones_ingrediente_6.Count).OrderBy(x => rnd.Next()).ToList();
+
+                    // Reorganizar los elementos de la lista original según los índices aleatorios
+                    var listaAleatoria = indicesAleatorios.Select(i => opciones_ingrediente_6[i]).ToList();
+
+                    // Actualizar la lista original con la nueva lista aleatoria
+                    opciones_ingrediente_6.Clear();
+                    opciones_ingrediente_6.AddRange(listaAleatoria);
                     pocion_lista = true;
                     Debug.Log("Pocion lista");
                 }
@@ -204,7 +253,6 @@ public class ElegirPocion : MonoBehaviour
         timer = FindObjectOfType<Timer>();
         Ingredientes_Selecionados=FindObjectOfType<ingredientes_selecionados>();
         ControladorNivel=FindObjectOfType<ControladorNivel>();
-        //isIngredientOptions = false;
         SaveManager.progreso progreso =SaveManager.Cargar();
         Debug.Log("Cargando progreso...");
         nivel_jugador = progreso.nivel_jugador;
@@ -214,7 +262,6 @@ public class ElegirPocion : MonoBehaviour
         pocion_lista = false;
         recompensa_calculada = false;
         interaction1.StartInteraction("¿Qué pocion debe preparar un jugador de nivel " + nivel_jugador.ToString() + "? DEBE TENER al menos "+(nivel_jugador+1).ToString()+" ingredientes.", HandleReply);
-        //_ = llm.Chat("¿Qué pocion debe preparar un jugador de nivel " + nivel_jugador.ToString() + "?", HandleReply);
         
     }
 
@@ -244,10 +291,11 @@ public class ElegirPocion : MonoBehaviour
             ingrediente1 = gameObject.AddComponent<LLMClient>();
             ingrediente1.prompt = prompt_agente_opciones;
             ingrediente1.stream = false;
+            ingrediente1.seed = -1;
             gameObject.SetActive(true);
 
             ServerClientInteraction interaction2 = new ServerClientInteraction(ingrediente1);
-            interaction2.StartInteraction("Da opciones para una cantidad de ingrediente de " + Cantidades[0].ToString() + " y un nivel de jugador de " + nivel_jugador.ToString(), HandleClientReply);
+            interaction2.StartInteraction($"Generate options for an amount of ingredient of {Cantidades[0].ToString()} and n={nivel_jugador.ToString()}.", HandleClientReply);
 
             llamada_realizada = true;
         }
@@ -310,18 +358,12 @@ public class ElegirPocion : MonoBehaviour
             Ingredientes_Selecionados.Objetivos.Add("- "+ ingrediente.cantidad + " L de "+ ingrediente.nombre);
             Respuesta+="- "+ ingrediente.cantidad + " L de "+ ingrediente.nombre+"\n\r";
             Cantidades.Add(ingrediente.cantidad);
+            Ingredientes_Selecionados.nombres_ingrediente.Add(ingrediente.nombre);
         }
         Ingredientes_Selecionados.ingredientes_nivel=Cantidades.Count();
         return Respuesta;
     }
 
-    /*public List<Fraction> opciones_igrediente(float cantidad_ingrediente) {
-        List<Fraction> opciones = new List<Fraction>();
-
-        _ = llmClient.Chat("Dame opciones para " + cantidad_ingrediente + " para un jugador de nivel " + nivel_jugador,HandleClientReply);
-        return opciones;
-    }*/
-    
 
     public void SiguienteFrase()
     {
@@ -335,7 +377,6 @@ public class ElegirPocion : MonoBehaviour
         {
 
             if (indice_ingrediente_actual == 1) {
-                //activamos textos
 
                 //activamos timer
                 timer.IniciarCuenta();
@@ -454,6 +495,7 @@ public class ElegirPocion : MonoBehaviour
         AgregarFrase(mensaje);
         mensaje = $"Tienes {Ingredientes_Selecionados.monedas} monedas en el banco.";
         AgregarFrase(mensaje);
+        
         ActualizarTexto();
 
     }
@@ -484,33 +526,4 @@ public class ElegirPocion : MonoBehaviour
         public Pocion pocion;
     }
 
-    /*public class Fraction
-    {
-        public int Numerator { get; set; }
-        public int Denominator { get; set; }
-
-        public Fraction(int numerator, int denominator)
-        {
-            Numerator = numerator;
-            Denominator = denominator;
-        }
-
-        public decimal ToDecimal()
-        {
-            return (decimal)Numerator / Denominator;
-        }
-        public static Fraction Parse(string fractionString)
-        {
-            string[] parts = fractionString.Split('/');
-
-            if (parts.Length == 2 && int.TryParse(parts[0], out int numerator) && int.TryParse(parts[1], out int denominator))
-            {
-                return new Fraction(numerator, denominator);
-            }
-            else
-            {
-                throw new ArgumentException("La cadena no representa una fracción válida.");
-            }
-        }
-    }*/
 }
